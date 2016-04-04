@@ -1,10 +1,13 @@
+* krfilter
 
+Block list for iptables.
 
-** iplist supplier
-https://ipv4.fetus.jp/krfilter
-http://www.kvs.jp/iplist/
+** iplist suppliers
+
+- https://ipv4.fetus.jp/krfilter
+- http://www.kvs.jp/iplist/
+- http://www.ipdeny.com/ipblocks/
+
+** cf.
+
 http://www.cyberciti.biz/faq/block-entier-country-using-iptables/
-
-http://www.ipdeny.com/ipblocks/
-
-
