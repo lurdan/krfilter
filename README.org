@@ -1,0 +1,10 @@
+
+
+** iplist supplier
+https://ipv4.fetus.jp/krfilter
+http://www.kvs.jp/iplist/
+http://www.cyberciti.biz/faq/block-entier-country-using-iptables/
+
+http://www.ipdeny.com/ipblocks/
+
+

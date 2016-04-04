@@ -1,0 +1,52 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          krfilter
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Should-Start:      $time $network $syslog iptables firehol shorewall ipmasq arno-iptables-firewall
+# Should-Stop:       $network $syslog iptables firehol shorewall ipmasq arno-iptables-firewall
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop krfilter
+# Description:       Start/stop krfilter, custom iptables settings for harmful zones.
+### END INIT INFO
+
+_start() {
+    echo "Starting firewall with the following config:"
+    iptables -N KRFILTER
+    iptables -N KRFILTERED
+    cat /etc/krfilter/iplist.d/*.list | egrep -v '^#|^$' | sort -u | while read IP
+    do
+        iptables -A KRFILTER -s $IP -j KRFILTERED
+    done
+    iptables -A KRFILTER -j ACCEPT
+    iptables -A KRFILTERED -j LOG --log-prefix "Rej-TCP "
+    iptables -A KRFILTERED -j DROP
+    iptables -A INPUT -p tcp -m state --state NEW -j KRFILTER
+    echo "."
+}
+
+_stop() {
+    echo "Stopping firewall with the following config:"
+    iptables -D INPUT 1
+    iptables -F KRFILTER
+    iptables -X KRFILTER
+    iptables -F KRFILTERED
+    iptables -X KRFILTERED
+    echo "."
+}
+
+case "$1" in
+    start)
+        _start &
+    ;;
+    stop)
+        _stop
+    ;;
+  *)
+    echo "Usage: /etc/init.d/ppp {start|stop|restart|force-reload}"
+    exit 1
+    ;;
+esac
+
+exit 0
